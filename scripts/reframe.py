@@ -11,9 +11,12 @@ Modos:
          planos con generales muy abiertos, donde el clasificador elegiría
          GENERAL y dejaría a la gente diminuta.
 
-El cuarto argumento son los overrides de encuadre: un JSON de índice de escena
-a fracción del ancho de la fuente, para cuando el automático sigue a quien no
-habla. Los índices salen de `--escenas`.
+El cuarto argumento son los overrides de encuadre, un JSON por índice de escena
+(los índices salen de `--escenas`). Fracciones del ancho y alto de la fuente:
+
+  {"3": 0.54}                              plano fijo, centrado al 54% del ancho
+  {"5": {"top": 0.16, "bottom": 0.54}}     pantalla dividida, dos regiones apiladas
+  {"5": {"top": {"x": 0.16, "y": 0.42}, "bottom": {"x": 0.54, "y": 0.42}}}
 
 Se le pasa el tramo de la fuente horizontal, no un clip ya reencuadrado.
 """
@@ -41,7 +44,9 @@ if len(sys.argv) > 2 and sys.argv[2] == "--escenas":
 
 OUT = sys.argv[2]
 MODO = sys.argv[3] if len(sys.argv) > 3 else "cut"
-OV = {int(k): float(v) for k, v in json.loads(sys.argv[4]).items()} if len(sys.argv) > 4 else None
+# Un número fija el plano; un dict {"top","bottom"} divide la pantalla en esa escena.
+OV = ({int(k): (v if isinstance(v, dict) else float(v))
+       for k, v in json.loads(sys.argv[4]).items()} if len(sys.argv) > 4 else None)
 
 if MODO == "cut":
     # El picker automatico vuelve a encender SPLIT por diseno, asi que no basta

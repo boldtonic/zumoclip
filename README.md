@@ -33,7 +33,7 @@ Eso es lo que hay aquí.
 - **Portadas verticales** — 1080x1920, mejor fotograma por cara y nitidez, titular en Anton con palabra destacada
 - **Variante para TikTok** — TikTok recorta la portada por arriba en la cuadrícula del perfil; esta versión baja la etiqueta de serie a la zona que sobrevive al recorte
 - **Carruseles** — 1080x1350 (4:5), un fotograma por frase con el texto encima
-- **Control manual del reencuadre** — expone tres cosas que OpenShorts tiene en su API pero no en la línea de comandos: corte por hablante, plano cerrado forzado y encuadre fijado a mano escena por escena
+- **Control manual del reencuadre** — expone tres cosas que OpenShorts tiene en su API pero no en la línea de comandos: corte por hablante, plano cerrado forzado y encuadre fijado a mano escena por escena, incluida la pantalla dividida en una escena concreta
 
 ---
 
@@ -117,6 +117,7 @@ python reframe.py TRAMO.mp4 --escenas              # indices de escena
 python reframe.py TRAMO.mp4 SALIDA.mp4 cut         # corta a quien habla
 python reframe.py TRAMO.mp4 SALIDA.mp4 track       # plano cerrado siempre
 python reframe.py TRAMO.mp4 SALIDA.mp4 track '{"0":0.36}'   # encuadre a mano
+python reframe.py TRAMO.mp4 SALIDA.mp4 track '{"5":{"top":0.16,"bottom":0.54}}'   # pantalla dividida en una escena
 ```
 
 ---
