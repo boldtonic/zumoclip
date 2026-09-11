@@ -2,6 +2,8 @@
 
 **Subtítulos en español, portadas y carruseles para [OpenShorts](https://github.com/mutonby/openshorts). Todo en local, sin subir vídeo a nadie.**
 
+![Zumoclip: de la entrevista original al clip vertical con subtítulos en español](assets/cabecera.gif)
+
 [![License: MIT](https://img.shields.io/badge/license-MIT-gold?style=flat-square)](LICENSE)
 [![Python 3.11](https://img.shields.io/badge/python-3.11-blue?style=flat-square&logo=python&logoColor=white)](https://www.python.org/)
 [![Built on OpenShorts](https://img.shields.io/badge/built%20on-OpenShorts-ff6a00?style=flat-square)](https://github.com/mutonby/openshorts)
@@ -14,6 +16,14 @@
 OpenShorts convierte una entrevista larga en clips verticales con subtítulos **en el idioma original**. Si tu canal publica en español entrevistas grabadas en inglés, eso no te vale: necesitas el subtítulo traducido, conservando la voz original. Y necesitas portada, carrusel y control sobre a quién enfoca la cámara.
 
 Eso es lo que hay aquí.
+
+<p align="center">
+  <a href="https://www.tiktok.com/@zumoclip_/video/7682481214615244054">
+    <img src="assets/tiktok-pacto.png" width="280" alt="Clip de Rosalía en SubwayTakes con subtítulos en español — ver en TikTok">
+  </a>
+  <br>
+  <sub>Hecho con estas herramientas. Voz original, subtítulo en español.</sub>
+</p>
 
 ---
 
