@@ -166,35 +166,22 @@ puedes ver al entrevistador el clip entero mientras habla el invitado.
 
 Lo que sí corta a quien habla es **`SPEAKER_CUT`**, que en el `.env` está
 comentado. Y no basta con las variables de entorno, porque el picker automático
-vuelve a encender SPLIT por diseño — está escrito como aditivo a propósito. Hay
-que forzar los módulos desde Python:
-
-```python
-# /tmp/cut_reframe.py
-import os, sys
-sys.path.insert(0,"$OPENSHORTS_HOME")
-from dotenv import load_dotenv; load_dotenv()
-os.environ["SPLIT_LAYOUT"]="1"; os.environ["SPEAKER_SIGNAL"]="1"; os.environ["SPEAKER_CUT"]="1"
-import active_speaker, split_layout
-active_speaker.ENABLED=True; active_speaker.CUT_MODE=True; split_layout.ENABLED=True
-import main as m
-m.render_clip(sys.argv[1], sys.argv[2], output_format="vertical")
-```
+vuelve a encender SPLIT por diseño — está escrito como aditivo a propósito.
+`reframe.py` fuerza los módulos desde Python:
 
 ```bash
-./.venv/bin/python /tmp/cut_reframe.py TRAMO_FUENTE.mp4 SALIDA.mp4
+./.venv/bin/python reframe.py TRAMO_FUENTE.mp4 SALIDA.mp4 cut
 ```
 
 Se le pasa el **tramo de la fuente horizontal**, no el clip ya reencuadrado.
 Unos 60 s de máquina por minuto de vídeo. Coste de API: 0.
 
-Otras dos opciones desde la misma API, ninguna expuesta en el CLI:
+Los otros dos usos del mismo script:
 
-- `m.render_clip(..., force_strategy='TRACK')` — plano cerrado en todas las
-  escenas, pero con el sesgo de arriba: puede clavarse en quien no habla.
-- `m.render_clip(..., crop_overrides={idx: 0.72})` — fija a mano el centro del
-  recorte de una escena, como fracción del ancho de la fuente. Es lo que hay
-  que usar cuando quieres decir "del segundo 5 al 12 quiero a Rosalía".
+- Modo `track` — plano cerrado en todas las escenas. Salva las fuentes con
+  planos generales muy abiertos, pero con el sesgo de arriba: puede clavarse en
+  quien no habla.
+- Un cuarto argumento con el encuadre fijado a mano por escena. Ver 7c.
 
 **Apagar `SPLIT_LAYOUT` no sirve de nada por sí solo**, y apagar además
 `AUTO_LAYOUT` deja GENERAL, que es peor: los dos encogidos sobre fondo
@@ -207,12 +194,7 @@ Cuando en la revisión sale "del segundo X al Y quiero a fulano", el flujo es es
 **1. Saca las escenas del tramo de fuente:**
 
 ```bash
-./.venv/bin/python -c "
-import sys; sys.path.insert(0,'$OPENSHORTS_HOME')
-import main as m
-scenes,fps=m.detect_scenes('TRAMO_FUENTE.mp4'); fps=float(fps)
-for i,(a,b) in enumerate(scenes): print(i, round(a.get_frames()/fps,2), '->', round(b.get_frames()/fps,2))
-"
+./.venv/bin/python reframe.py TRAMO_FUENTE.mp4 --escenas
 ```
 
 Los tiempos son del **tramo de fuente**, no del clip final. Para pasar de uno a
@@ -229,7 +211,13 @@ $FF -nostdin -v error -ss SEGUNDO -i TRAMO_FUENTE.mp4 -frames:v 1 -vf scale=480:
 **3. Reencuadra con el override**, indicando índice de escena y esa fracción:
 
 ```bash
-./.venv/bin/python scripts/cut_reframe_ov.py TRAMO_FUENTE.mp4 SALIDA.mp4 '{"5":0.54}'
+./.venv/bin/python reframe.py TRAMO_FUENTE.mp4 SALIDA.mp4 cut '{"5":0.54}'
+```
+
+Para **pantalla dividida** en esa escena, dos regiones apiladas en vez de una:
+
+```bash
+./.venv/bin/python reframe.py TRAMO_FUENTE.mp4 SALIDA.mp4 cut '{"5":{"top":0.16,"bottom":0.54}}'
 ```
 
 Escenas no nombradas conservan el encuadre automático, así que corregir un plano
