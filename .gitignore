@@ -7,6 +7,7 @@ __pycache__/
 *.mp4
 *.ass
 *.json
+!.claude-plugin/*.json
 
 # Imagenes fuera, salvo las del README.
 *.jpg

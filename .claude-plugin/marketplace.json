@@ -1,0 +1,19 @@
+{
+  "name": "zumoclip",
+  "owner": {
+    "name": "Fernando Rullan",
+    "url": "https://github.com/boldtonic"
+  },
+  "metadata": {
+    "description": "Clips de entrevistas con subtítulos en español para Instagram y TikTok."
+  },
+  "plugins": [
+    {
+      "name": "zumoclip",
+      "source": "./",
+      "description": "Clips verticales con subtítulos en español a partir de entrevistas largas: selección de tramos, traducción, reencuadre, portadas, carruseles y copy. Se apoya en OpenShorts.",
+      "version": "0.1.0",
+      "category": "productivity"
+    }
+  ]
+}

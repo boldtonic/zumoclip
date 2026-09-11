@@ -1,8 +1,12 @@
 import os
 # Raiz de la instalacion de OpenShorts. Se puede fijar con OPENSHORTS_HOME.
 OPENSHORTS = os.environ.get("OPENSHORTS_HOME", os.path.expanduser("~/openshorts"))
-# ffmpeg CON libass. El de Homebrew normal no lo trae: usa ffmpeg-full.
-FFMPEG = os.environ.get("FFMPEG", "ffmpeg")
+# ffmpeg CON libass para quemar subtítulos. El de Homebrew normal no lo trae,
+# así que se busca ffmpeg-full en las rutas de Homebrew. FFMPEG lo sobrescribe.
+FFMPEG = os.environ.get("FFMPEG") or next(
+    (p for p in ("/opt/homebrew/opt/ffmpeg-full/bin/ffmpeg",
+                 "/usr/local/opt/ffmpeg-full/bin/ffmpeg") if os.path.exists(p)),
+    "ffmpeg")
 import json, os, sys, glob
 from dotenv import load_dotenv
 from google import genai

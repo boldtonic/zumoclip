@@ -7,6 +7,7 @@
 [![License: MIT](https://img.shields.io/badge/license-MIT-gold?style=flat-square)](LICENSE)
 [![Python 3.11](https://img.shields.io/badge/python-3.11-blue?style=flat-square&logo=python&logoColor=white)](https://www.python.org/)
 [![Built on OpenShorts](https://img.shields.io/badge/built%20on-OpenShorts-ff6a00?style=flat-square)](https://github.com/mutonby/openshorts)
+[![Claude Code skill](https://img.shields.io/badge/Claude%20Code-skill-d97757?style=flat-square)](#instalación)
 [![Self-hosted](https://img.shields.io/badge/self--hosted-yes-8b5cf6?style=flat-square)]()
 [![X](https://img.shields.io/badge/X-@boldtonic-000000?style=flat-square&logo=x&logoColor=white)](https://x.com/boldtonic)
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-Fernando%20Rullan-0A66C2?style=flat-square&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/ferrullan/)
@@ -29,6 +30,7 @@ Eso es lo que hay aquí.
 
 ## Qué añade
 
+- **Skill de Claude Code** — el proceso entero empaquetado: le pides "saca clips de esta entrevista" y Claude aplica todo lo de [PROCESO.md](PROCESO.md) sin que tengas que explicárselo
 - **Subtítulos traducidos al español** — el repo original solo dobla con ElevenLabs; esto traduce la transcripción y la quema como subtítulo, manteniendo la voz del entrevistado
 - **Portadas verticales** — 1080x1920, mejor fotograma por cara y nitidez, titular en Anton con palabra destacada
 - **Variante para TikTok** — TikTok recorta la portada por arriba en la cuadrícula del perfil; esta versión baja la etiqueta de serie a la zona que sobrevive al recorte
@@ -39,38 +41,40 @@ Eso es lo que hay aquí.
 
 ## Instalación
 
-Primero OpenShorts:
+### Como skill de Claude Code
 
-```bash
-git clone https://github.com/mutonby/openshorts.git ~/openshorts
-cd ~/openshorts && python3.11 -m venv .venv
-./.venv/bin/pip install -r requirements.txt
+```
+/plugin marketplace add boldtonic/zumoclip
+/plugin install zumoclip@zumoclip
 ```
 
-Luego esto:
+Y en cualquier sesión:
+
+> Saca clips de esta entrevista: https://www.youtube.com/watch?v=...
+
+El skill comprueba que tienes todo instalado —y si no, lo instala—, elige los tramos, corta, traduce, reencuadra y te devuelve los clips con portada, carrusel y copy.
+
+### A mano
 
 ```bash
 git clone https://github.com/boldtonic/zumoclip.git
-cp zumoclip/scripts/*.py ~/openshorts/
+bash zumoclip/install.sh
 ```
 
-**Dos dependencias que no son opcionales:**
+`install.sh` instala lo que falte y no toca lo que ya está:
 
-```bash
-brew install ffmpeg-full deno
-```
+- con Homebrew: `python@3.11`, `ffmpeg`, `ffmpeg-full` y `deno`
+- OpenShorts en `~/openshorts` con su entorno de Python (unos 2 GB)
+- los scripts de este repo, copiados junto a OpenShorts
+- un `.env` si no existe; nunca sobrescribe el tuyo
 
-- **`ffmpeg-full`** — la fórmula `ffmpeg` normal de Homebrew **viene sin `libass`** y no puede quemar subtítulos. Falla con `Error opening output files: Filter not found`. Homebrew además no la enlaza, así que hay que invocarla por ruta completa.
-- **`deno`** — YouTube exige un runtime de JavaScript para que yt-dlp extraiga los formatos.
+Para comprobar sin instalar nada: `bash zumoclip/install.sh --check`.
 
-**Configuración por variables de entorno:**
+**Lo único manual:** tu clave de Gemini en `~/openshorts/.env` (`GEMINI_API_KEY=...`).
 
-```bash
-export OPENSHORTS_HOME=~/openshorts
-export FFMPEG=/opt/homebrew/Cellar/ffmpeg-full/9.0.1_1/bin/ffmpeg
-```
+**Por qué dos ffmpeg:** OpenShorts usa el `ffmpeg` normal, pero el de Homebrew viene **sin `libass`** y no puede quemar subtítulos (`Filter not found`). Para eso está `ffmpeg-full`, que Homebrew no enlaza; los scripts lo encuentran solos. Si lo tienes en otra ruta, fija `FFMPEG=/ruta/al/ffmpeg`.
 
-La API key de Gemini va en `$OPENSHORTS_HOME/.env`.
+**Por qué `deno`:** YouTube exige un runtime de JavaScript para que yt-dlp extraiga los formatos.
 
 ---
 

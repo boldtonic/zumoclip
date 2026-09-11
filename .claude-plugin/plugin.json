@@ -1,0 +1,12 @@
+{
+  "name": "zumoclip",
+  "description": "Clips verticales con subtítulos en español a partir de entrevistas largas: selección de tramos, traducción, reencuadre, portadas, carruseles y copy. Se apoya en OpenShorts.",
+  "version": "0.1.0",
+  "author": {
+    "name": "Fernando Rullan"
+  },
+  "homepage": "https://github.com/boldtonic/zumoclip",
+  "repository": "https://github.com/boldtonic/zumoclip",
+  "license": "MIT",
+  "keywords": ["openshorts", "video", "subtitles", "spanish", "reels", "tiktok", "shorts"]
+}
